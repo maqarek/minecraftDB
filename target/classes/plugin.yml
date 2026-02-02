@@ -1,0 +1,24 @@
+name: spigotPlugin
+version: '1.0-SNAPSHOT'
+main: Plugin.spigotPlugin.SpigotPlugin
+api-version: '1.21'
+
+commands:
+  translatetobin:
+    description: translates to binary
+  clearAll:
+    description: clears up the memory
+  readChunk:
+    description: reads data from a given chunk
+  readChunkBin:
+    description: reads data from a given chunk in bin
+  translatetohex:
+    description: translates to hexadecimal
+  testcommand:
+    description: testing various things
+  addTable:
+    description: adds new table
+  readTable:
+    description: reads table
+  query:
+    description: performs sql request

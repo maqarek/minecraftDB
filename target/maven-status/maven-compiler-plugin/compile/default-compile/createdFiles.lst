@@ -1,0 +1,15 @@
+Plugin\spigotPlugin\endpoints\DeleteHandler.class
+Plugin\spigotPlugin\endpoints\GetAllHandler.class
+Plugin\spigotPlugin\endpoints\UpdateHandler.class
+Plugin\spigotPlugin\endpoints\QueryHandler.class
+Plugin\spigotPlugin\ApiManager.class
+Plugin\spigotPlugin\WorldEditor$location.class
+Plugin\spigotPlugin\Table.class
+Plugin\spigotPlugin\SQLParser.class
+Plugin\spigotPlugin\WorldEditor.class
+Plugin\spigotPlugin\SpigotPlugin.class
+Plugin\spigotPlugin\TableEditor.class
+Plugin\spigotPlugin\StoringData.class
+Plugin\spigotPlugin\endpoints\UploadHandler.class
+Plugin\spigotPlugin\DataUtils.class
+Plugin\spigotPlugin\endpoints\APIEndpoint.class
