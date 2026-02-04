@@ -18,7 +18,7 @@ public class SQLParser {
     public void parseSqlType(String sql){
         String[] arr = sql.split(" ");
         if(arr.length > 3){
-            switch(arr[0]){
+            switch(arr[0]){ //TODO
                 case "INSERT":
                     break;
                 case "UPDATE":
@@ -61,27 +61,28 @@ public class SQLParser {
             String[] results = TableEditor.filter(rows, filterCond);
             SpigotPlugin.instance.player.sendMessage("SOMETHING IS FILTERED HERE");
             for(String s : results){
-                System.out.println(s);
+                SpigotPlugin.instance.player.sendMessage(s);
             }
         }else{
+            SpigotPlugin.instance.player.sendMessage("NOTHING IS FILTERED HERE");
             for(String s : rows){
-                SpigotPlugin.instance.player.sendMessage("NOTHING IS FILTERED HERE");
-                System.out.println(s);
+                SpigotPlugin.instance.player.sendMessage(s);
             }
         }
     }
 
 
-    public void parseINSERT(String sql){
+    public void parseINSERT(String sql){ //TODO
         String[] arr = sql.split(" ");
 
     }
-    public void parseUPDATE(String sql){
+    public void parseUPDATE(String sql){ //TODO
         String[] arr = sql.split(" ");
 
     }
     public void parseDELETE(String sql){
         String[] arr = sql.split(" ");
+
     }
 
 
@@ -90,11 +91,11 @@ public class SQLParser {
             String[] arr = condition.split("=");
             return (JSONObject obj) -> obj.getString(arr[0]).equals(arr[1]);
         }
-        else if(!condition.contains("=") && !condition.contains(">") &&  condition.contains("<")){
+        else if(!condition.contains("=") && !condition.contains(">") &&  condition.contains("<")){ // TODO:handle possible exceptions
             String[] arr = condition.split("<");
             return (JSONObject obj) -> obj.getDouble(arr[0]) < Double.parseDouble(arr[1]);
         }
-        else if(!condition.contains("=") && condition.contains(">") &&  !condition.contains("<")){
+        else if(!condition.contains("=") && condition.contains(">") &&  !condition.contains("<")){ // TODO:handle possible exceptions
             String[] arr = condition.split(">");
             return (JSONObject obj) -> obj.getDouble(arr[0]) > Double.parseDouble(arr[1]);
         }
