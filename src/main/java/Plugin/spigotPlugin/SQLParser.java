@@ -3,6 +3,8 @@ package Plugin.spigotPlugin;
 import org.bukkit.World;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Predicate;
 
 public class SQLParser {
@@ -24,6 +26,7 @@ public class SQLParser {
                 case "UPDATE":
                     break;
                 case "DELETE":
+                    parseDELETE(sql);
                     break;
                 case "SELECT":
                     parseSELECT(sql);
@@ -36,7 +39,7 @@ public class SQLParser {
         }
     }
 
-    public void parseSELECT(String sql){
+    public void parseSELECT(String sql){            //SELECT [COLUMNS] FROM [TABLE] WHERE [CONDITION]
         String[] arr = sql.split(" ");
         String[] selFields = arr[1].split(",");
         String tableName = arr[3];
@@ -46,15 +49,14 @@ public class SQLParser {
             filterCond = parsePredicate(condition);
         }
 
-        int tableZ = tableEditor.findTableZByName(tableName);
-        if(tableZ == -1){
-            throw new NullPointerException("[MyError] No such table: " + tableName);
+        Table table;
+        try{
+            table = findTable(tableName);
+        }catch(NullPointerException e){
+            e.printStackTrace();
+            return;
         }
 
-        Table table = tableEditor.getTableById(tableZ/16);
-        if(table == null){
-            throw new NullPointerException("[MyError] No such table: " + tableName + "[tableZ/16(id)]: " + String.valueOf(tableZ/16));
-        }
         String[] rows = table.rows.toArray(new String[0]);
 
         if(filterCond != null){
@@ -74,17 +76,47 @@ public class SQLParser {
 
     public void parseINSERT(String sql){ //TODO
         String[] arr = sql.split(" ");
-
     }
     public void parseUPDATE(String sql){ //TODO
         String[] arr = sql.split(" ");
 
     }
-    public void parseDELETE(String sql){
+    public void parseDELETE(String sql){        // DELETE FROM [TABLE] WHERE [CONDITION]
         String[] arr = sql.split(" ");
+        String tableName = arr[2];
 
+        Predicate<JSONObject> filterCond =null;
+        String condition = arr[4];
+        filterCond = parsePredicate(condition);
+        Table table;
+        try{
+            table = findTable(tableName);
+        }catch(NullPointerException e){
+            e.printStackTrace();
+            return;
+        }
+
+        String[] rows = table.rows.toArray(new String[0]);
+
+        String[] results = TableEditor.filter(rows, filterCond);
+
+        List<String> resultList = Arrays.asList(results);
+
+        tableEditor.deleteParticularChunks(tableEditor.findTableZByName(tableName)/16,resultList);
     }
 
+    public Table findTable(String tableName){
+        int tableZ = tableEditor.findTableZByName(tableName);
+        if(tableZ == -1){
+            throw new NullPointerException("[MyError] No such table: " + tableName);
+        }
+
+        Table table = tableEditor.getTableById(tableZ/16);
+        if(table == null){
+            throw new NullPointerException("[MyError] No such table: " + tableName + "[tableZ/16(id)]: " + String.valueOf(tableZ/16));
+        }
+        return table;
+    }
 
     public Predicate<JSONObject> parsePredicate(String condition){
         if(condition.contains("=") && !condition.contains(">") &&  !condition.contains("<")){

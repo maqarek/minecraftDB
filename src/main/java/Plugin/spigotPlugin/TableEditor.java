@@ -105,6 +105,16 @@ public class TableEditor {
         }
     }
 
+    public void deleteParticularChunks(int tableId, List<String> strings){
+        int z = tableId*16, y = -60, x = 0;
+        while(DataUtils.MATERIAL_TO_CHAR.get(SpigotPlugin.world.getBlockAt(x,y,z).getType()) != null){
+            if(strings.contains(DataUtils.translateToStringFromHex(readChunk(x,y,z)))){
+               worldEditor.clearChunk(x/16, tableId);
+            }
+            x+=16;
+        }
+    }
+
     public int findZForNewTable(){
         int z = 0;
         while(DataUtils.MATERIAL_TO_CHAR.get(SpigotPlugin.world.getBlockAt(-16,-60,z).getType()) != null){
