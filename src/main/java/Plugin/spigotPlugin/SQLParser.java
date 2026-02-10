@@ -74,8 +74,20 @@ public class SQLParser {
     }
 
 
-    public void parseINSERT(String sql){ //TODO
+    public void parseINSERT(String sql){ // INSERT INTO [TABLE] [COLUMN1,COLUMN2] VALUES VALUE1,VALUE2
         String[] arr = sql.split(" ");
+        String tableName = arr[2];
+        String[] insertFields = arr[3].split(",");
+        String[] values = arr[5].split(",");
+
+        String JsonResult = getJSONString(insertFields, values);
+        String JsonResultHex = DataUtils.translateToHex(JsonResult);
+
+        int tableZ = tableEditor.findTableZByName(tableName);
+
+        editor.buildChunk(JsonResultHex, editor.getFreeChunkLocation(tableZ / 16).x(), -60, tableZ);// TODO: !IMPORTANT you finished here
+
+
     }
     public void parseUPDATE(String sql){ //TODO
         String[] arr = sql.split(" ");
@@ -118,6 +130,15 @@ public class SQLParser {
         return table;
     }
 
+    public String getJSONString(String[] fields, String[] values){
+        String result = "{\n";
+        for(int i = 0; i < fields.length; i++){
+            result += fields[i] + ":" + values[i] + ",\n";
+        }
+        result += "}";
+        return result;
+    }
+
     public Predicate<JSONObject> parsePredicate(String condition){
         if(condition.contains("=") && !condition.contains(">") &&  !condition.contains("<")){
             String[] arr = condition.split("=");
@@ -133,5 +154,7 @@ public class SQLParser {
         }
         return null;
     }
+
+
 
 }

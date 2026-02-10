@@ -35,7 +35,7 @@ public class WorldEditor implements StoringData<String> {
 
         while(DataUtils.MATERIAL_TO_CHAR.get(SpigotPlugin.world.getBlockAt(x,y,z).getType()) != null){
             String message = readChunk(i);
-            String translatedMessage = DataUtils.translateToStringFromHex(message);                  // TODO: optimize this shit
+            String translatedMessage = DataUtils.translateToStringFromHex(message);                  // TODO: optimize
             if(translatedMessage.split(";").length > 1){
                 translatedMessage = translatedMessage.split(";")[1];
             }
