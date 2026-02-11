@@ -22,6 +22,7 @@ public class SQLParser {
         if(arr.length > 3){
             switch(arr[0]){ //TODO
                 case "INSERT":
+                    parseINSERT(sql);
                     break;
                 case "UPDATE":
                     break;
