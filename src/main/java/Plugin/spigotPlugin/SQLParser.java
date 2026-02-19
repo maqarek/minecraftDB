@@ -3,6 +3,7 @@ package Plugin.spigotPlugin;
 import org.bukkit.World;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
@@ -86,12 +87,29 @@ public class SQLParser {
 
         int tableZ = tableEditor.findTableZByName(tableName);
 
-        editor.buildChunk(JsonResultHex, editor.getFreeChunkLocation(tableZ / 16).x(), -60, tableZ);// TODO: !IMPORTANT you finished here
+        editor.buildChunk(JsonResultHex, editor.getFreeChunkLocation(tableZ / 16).x(), -60, tableZ);// TODO: !IMPORTANT you re not finished here yet
 
 
     }
-    public void parseUPDATE(String sql){ //TODO
+    public void parseUPDATE(String sql){ // UPDATE [TABLE] SET [COLUMN1=VALUE1,COLUMN2=VALUE2] WHERE [CONDITION] //WIP
         String[] arr = sql.split(" ");
+        String tableName = arr[1];
+        String[] updateFields = arr[3].split(",");
+        Predicate<JSONObject> filterCond = parsePredicate(arr[5]);
+
+        int tableZ = tableEditor.findTableZByName(tableName);
+        Table table = tableEditor.getTableById(tableZ/16);
+
+        String[] results = TableEditor.filter(table.rows.toArray(new String[0]), filterCond);
+
+        List<String> columns = new ArrayList<>();
+        List<String> values = new ArrayList<>();
+        for(String field : updateFields){
+            String[] pair = field.split("=");
+            columns.add(pair[0]);
+            values.add(pair[1]);
+        }
+        ///  we need here to create a function updating particular fields in results[]
 
     }
     public void parseDELETE(String sql){        // DELETE FROM [TABLE] WHERE [CONDITION]
