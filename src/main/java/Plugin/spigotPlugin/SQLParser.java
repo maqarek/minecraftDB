@@ -26,6 +26,7 @@ public class SQLParser {
                     parseINSERT(sql);
                     break;
                 case "UPDATE":
+                    parseUPDATE(sql);
                     break;
                 case "DELETE":
                     parseDELETE(sql);
@@ -110,6 +111,10 @@ public class SQLParser {
             values.add(pair[1]);
         }
         ///  we need here to create a function updating particular fields in results[]
+        String[] columnsSTR = columns.toArray(new String[0]);
+        String[] valuesSTR = values.toArray(new String[0]);
+
+        TableEditor.updateChunks(table, results, columnsSTR, valuesSTR);        // ready to test
 
     }
     public void parseDELETE(String sql){        // DELETE FROM [TABLE] WHERE [CONDITION]

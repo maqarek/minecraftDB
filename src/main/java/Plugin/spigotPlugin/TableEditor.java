@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 import javax.xml.crypto.Data;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -146,6 +147,24 @@ public class TableEditor {
             }
         }
         return result.toArray(array);
+    }
+
+    public static Table updateChunks(Table table, String[] chunks, String[] columns, String[] values){
+        List<String> chunksToEdit = Arrays.stream(chunks).toList();
+        for(String chunk : table.rows){
+            if(chunksToEdit.contains(chunk)){
+                table.rows.set(table.rows.indexOf(chunk), editChunk(chunk,columns,values));
+            }
+        }
+        return table;
+    }
+
+    public static String editChunk(String chunk, String[] columns, String[] values){
+        JSONObject object = new JSONObject(chunk);
+        for(int i = 0; i < columns.length; i++){
+            object.put(columns[i], values[i]);
+        }
+        return object.toString();
     }
 
 
