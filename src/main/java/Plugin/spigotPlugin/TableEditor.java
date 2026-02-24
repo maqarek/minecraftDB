@@ -149,11 +149,13 @@ public class TableEditor {
         return result.toArray(array);
     }
 
-    public static Table updateChunks(Table table, String[] chunks, String[] columns, String[] values){
+    public Table updateChunks(Table table, String[] chunks, String[] columns, String[] values){
         List<String> chunksToEdit = Arrays.stream(chunks).toList();
         for(String chunk : table.rows){
             if(chunksToEdit.contains(chunk)){
-                table.rows.set(table.rows.indexOf(chunk), editChunk(chunk,columns,values));
+                String newMsg =  editChunk(chunk,columns,values);
+                table.rows.set(table.rows.indexOf(chunk), newMsg);
+                worldEditor.overrideChunk(DataUtils.translateToHex(newMsg),table.rows.indexOf(chunk)*16, -60, this.findTableZByName(table.tableName));
             }
         }
         return table;

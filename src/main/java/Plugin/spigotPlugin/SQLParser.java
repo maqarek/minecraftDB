@@ -114,7 +114,9 @@ public class SQLParser {
         String[] columnsSTR = columns.toArray(new String[0]);
         String[] valuesSTR = values.toArray(new String[0]);
 
-        TableEditor.updateChunks(table, results, columnsSTR, valuesSTR);        // ready to test
+        Table resultTable = tableEditor.updateChunks(table, results, columnsSTR, valuesSTR);        // ready to test
+
+
 
     }
     public void parseDELETE(String sql){        // DELETE FROM [TABLE] WHERE [CONDITION]
@@ -157,7 +159,7 @@ public class SQLParser {
     public String getJSONString(String[] fields, String[] values){
         String result = "{\n";
         for(int i = 0; i < fields.length; i++){
-            result += fields[i] + ":" + values[i] + ",\n";
+            result += '"' + fields[i] + '"' + ": " + '"' + values[i] + '"' + ",\n";
         }
         result += "}";
         return result;
