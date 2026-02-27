@@ -12,8 +12,8 @@ import org.bukkit.plugin.Plugin;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
-
 public class UpdateHandler extends APIEndpoint{
+
 
     private HttpServer server;
 

@@ -87,6 +87,7 @@ public class TableEditor {
     }
 
     public void loadAllTables(){
+        tables.clear();
         int  z = 0;
         while(DataUtils.MATERIAL_TO_CHAR.get(SpigotPlugin.world.getBlockAt(-16,-60,z).getType()) != null){
             String chunkContent = this.readChunk(-16,-60,z);
@@ -146,7 +147,7 @@ public class TableEditor {
                 result.add(t);
             }
         }
-        return result.toArray(array);
+        return result.toArray(new String[0]);
     }
 
     public Table updateChunks(Table table, String[] chunks, String[] columns, String[] values){
@@ -154,8 +155,10 @@ public class TableEditor {
         for(String chunk : table.rows){
             if(chunksToEdit.contains(chunk)){
                 String newMsg =  editChunk(chunk,columns,values);
-                table.rows.set(table.rows.indexOf(chunk), newMsg);
+                worldEditor.clearChunk(table.rows.indexOf(chunk),findTableZByName(table.tableName)/16);
                 worldEditor.overrideChunk(DataUtils.translateToHex(newMsg),table.rows.indexOf(chunk)*16, -60, this.findTableZByName(table.tableName));
+                table.rows.set(table.rows.indexOf(chunk), newMsg);
+                
             }
         }
         return table;
